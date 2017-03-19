@@ -25,10 +25,10 @@ import cPickle as pick
 def load(csvname):
     line = csv.reader(open(csvname,"rb"))
     datas  =  list(line)
-    global dataset
+    datadict = {}
     for i in datas:
-    	dataset[i[0]] = [float(x) for x in i[1:]]
-    return dataset
+    	datadict[i[0]] = [float(x) for x in i[1:]]
+    return datadict
 
 #calculate euclidiean distance between two Songs
 
@@ -97,7 +97,7 @@ def avg(arr):
 def normalize(val,norm):
  	for i in range(len(val)):
     		val[i] = ((val[i]- norm[i][1])/(norm[i][0]-norm[i][1]))*(100-0.1)+0.1
-    	return val
+	return val
 
 
 #Find The Cost (K medoid)
@@ -236,7 +236,9 @@ def main():
 	# Load The song DataBase
 	database = load("database.csv")
 
-	#Normalize
+	#Normalize and store it into a dictionary
+
+	for key,value in database.iteritems():
+		database[key] = normalize(value,norm)
 
 main()
-
